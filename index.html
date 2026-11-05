@@ -237,7 +237,11 @@ button.claim:not(:disabled):hover { filter: brightness(1.08); }
     var box = el('div', 'shift');
     var head = el('div', 'shifthead');
     head.appendChild(el('span', 'shiftname', 'Open house'));
-    var hrs = el('span', 'hours', 'Hours TBA');
+    var hrs = document.createElement('input');
+    hrs.type = 'text'; hrs.className = 'hoursinput'; hrs.maxLength = 60;
+    hrs.placeholder = 'Add hours (e.g. 11am - 2pm)';
+    hrs.setAttribute('aria-label', 'Open house hours for ' + slotMeta[key]);
+    (function (k, inp) { inp.addEventListener('change', function () { saveHours(k, inp); }); })(key, hrs);
     head.appendChild(hrs);
     box.appendChild(head);
     var seats = el('div', 'seats');
@@ -267,8 +271,8 @@ button.claim:not(:disabled):hover { filter: brightness(1.08); }
       var r = refs[k], hs = holders(k);
       var iHold = hs.some(function (h) { return h.id === myId; });
       var h = data && data.hours && data.hours[k];
-      r.hours.textContent = h ? h : 'Hours TBA';
-      r.hours.className = 'hours' + (h ? ' set' : '');
+      if (document.activeElement !== r.hours && !r.hours.dataset.saving) r.hours.value = h || '';
+      r.hours.disabled = !data;
       r.seats.textContent = '';
       for (var n = 0; n < Math.max(CAP, hs.length); n++) {
         var s = hs[n];
@@ -305,6 +309,22 @@ button.claim:not(:disabled):hover { filter: brightness(1.08); }
       data = j; render();
       if (first) note('Tap Sign up on any open day. You can cancel later from this same phone or computer.');
     }).catch(function () { if (!quiet) note('Can’t reach the sign-ups right now. Reload the page to try again.', true); });
+  }
+
+  function saveHours(k, inp) {
+    if (!data) return;
+    var text = inp.value.trim().slice(0, 60);
+    inp.dataset.saving = '1';
+    note('Saving hours…');
+    fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'hours', date: k, text: text, id: myId, secret: mySecret })
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j && j.ok) { data = j; note('Hours saved for ' + slotMeta[k] + '.'); }
+      else note('Hours did not save. Please try again.', true);
+    }).catch(function () { note('Hours did not save. Check your connection and try again.', true); })
+      .finally(function () { delete inp.dataset.saving; render(); });
   }
 
   function toggle(k) {
