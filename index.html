@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>167th Avenue Open House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: navy header band, a progress summary, then one row per day with a Morning and an Afternoon shift side by side (stacked on phones). Each shift holds two agent seats. */
+:root {
+  --bg: #F4F6FA;
+  --surface: #FFFFFF;
+  --ink: #10295A;
+  --muted: #55627F;
+  --line: #D8DEEA;
+  --brand: #10295A;
+  --on-brand: #FFFFFF;
+  --brand-soft: #C9D6F2;
+  --go: #15796A;
+  --on-go: #FFFFFF;
+  --go-soft: #E2F3EE;
+  --me: #DB1263;
+  --me-soft: #FCE7F0;
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1324;
+    --surface: #131D35;
+    --ink: #E6EBF6;
+    --muted: #94A1BE;
+    --line: #26334F;
+    --brand: #13306B;
+    --on-brand: #FFFFFF;
+    --brand-soft: #B5C6EE;
+    --go: #2FBF9E;
+    --on-go: #06201A;
+    --go-soft: #123A33;
+    --me: #FF5C98;
+    --me-soft: #3A1426;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1324;
+  --surface: #131D35;
+  --ink: #E6EBF6;
+  --muted: #94A1BE;
+  --line: #26334F;
+  --brand: #13306B;
+  --on-brand: #FFFFFF;
+  --brand-soft: #B5C6EE;
+  --go: #2FBF9E;
+  --on-go: #06201A;
+  --go-soft: #123A33;
+  --me: #FF5C98;
+  --me-soft: #3A1426;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+}
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.inner { max-width: 960px; margin: 0 auto; }
+
+header.band { background: var(--brand); color: var(--on-brand); padding-block: 28px 30px; border-bottom: 4px solid var(--me); }
+.eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--brand-soft); margin: 0 0 8px; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 6vw, 44px); line-height: 1.05; margin: 0 0 8px; text-wrap: balance; letter-spacing: -0.01em; }
+.addr { margin: 0; font-size: 16px; color: var(--brand-soft); }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 14px; }
+.facts li { display: flex; gap: 6px; }
+.facts b { font-weight: 600; }
+
+main.band { padding-block: 22px 40px; }
+.summary { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; margin-bottom: 18px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.panel h2 { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.big { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
+.big small { font-family: var(--font-body); font-weight: 500; font-size: 14px; color: var(--muted); margin-left: 6px; }
+.bar { height: 8px; border-radius: 4px; background: var(--line); margin-top: 12px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--go); transition: width 0.3s ease; }
+.mine-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14px; }
+.mine-list li { color: var(--ink); }
+.mine-empty { color: var(--muted); margin: 0; font-size: 14px; }
+
+.namebox { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 12px; }
+.namebox label { font-weight: 700; font-size: 14px; }
+.namebox input { font: inherit; font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-height: 38px; width: min(280px, 100%); }
+.namebox input:focus-visible { outline: 3px solid var(--me); outline-offset: 1px; }
+.namehint { font-size: 13px; color: var(--muted); }
+#note { min-height: 20px; margin: 0 0 12px; font-size: 14px; color: var(--muted); }
+#note.warn { color: var(--me); font-weight: 600; }
+
+.week { display: grid; gap: 12px; }
+.weekhead { font-family: var(--font-display); font-weight: 800; font-size: 18px; margin: 14px 0 0; }
+.weekhead:first-child { margin-top: 0; }
+.day { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; display: grid; grid-template-columns: 170px 1fr; min-width: 0; }
+.daylabel { padding: 14px 12px 14px 16px; border-right: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+.dow { font-family: var(--font-display); font-weight: 800; font-size: 20px; line-height: 1; }
+.date { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.shift { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.shift + .shift { border-left: 1px solid var(--line); }
+.shifthead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.shiftname { font-weight: 700; font-size: 14px; }
+.hoursinput { font: inherit; font-size: 14px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 6px; padding: 5px 9px; min-height: 32px; flex: 1 1 140px; min-width: 0; max-width: 260px; font-variant-numeric: tabular-nums; }
+.hoursinput::placeholder { color: var(--muted); }
+.hoursinput:focus-visible { outline: 3px solid var(--me); outline-offset: 1px; }
+.hoursinput:disabled { opacity: 0.7; }
+.seats { display: grid; gap: 6px; }
+.seat { display: flex; align-items: center; gap: 8px; min-height: 30px; padding: 3px 8px; border-radius: 6px; font-size: 14px; min-width: 0; }
+.seat.open { border: 1px dashed var(--line); color: var(--muted); }
+.seat.taken { background: var(--go-soft); }
+.seat.me { background: var(--me-soft); font-weight: 600; }
+.seat img { width: 22px; height: 22px; border-radius: 50%; flex: none; }
+.seat span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.status { font-size: 12px; color: var(--muted); font-weight: 500; }
+.status.full { color: var(--go); font-weight: 700; }
+button.claim {
+  font: inherit; font-weight: 600; font-size: 14px; cursor: pointer;
+  background: var(--go); color: var(--on-go); border: 1px solid var(--go);
+  padding: 7px 14px; border-radius: 6px; min-height: 36px;
+}
+button.claim.cancel { background: transparent; color: var(--me); border-color: var(--me); }
+button.claim:disabled { opacity: 0.5; cursor: not-allowed; }
+button.claim:focus-visible { outline: 3px solid var(--me); outline-offset: 2px; }
+button.claim:not(:disabled):hover { filter: brightness(1.08); }
+
+@media (max-width: 700px) {
+  .summary { grid-template-columns: 1fr; }
+  .day { grid-template-columns: 1fr; }
+  .daylabel { border-right: 0; border-bottom: 1px solid var(--line); flex-direction: row; align-items: baseline; gap: 10px; padding: 10px 16px; }
+  .shift + .shift { border-left: 0; border-top: 1px solid var(--line); }
+}
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+<style>body{margin:0}</style>
+</head><body>
+<style>
+.hours { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.hours.set { color: var(--ink); font-weight: 600; }
+</style>
+
+<header class="band">
+  <div class="inner">
+    <p class="eyebrow">Open house &middot; Nov 9&ndash;22, 2026</p>
+    <h1>31308 North 167th Avenue</h1>
+    <p class="addr">Surprise, Arizona 85387 &middot; Luxury listing</p>
+    <ul class="facts">
+      <li><b>Open</b> 7 days a week</li>
+      <li><b>2 agents</b> per day</li>
+      <li><b>Hours</b> shown on each day</li>
+    </ul>
+  </div>
+</header>
+
+<main class="band">
+  <div class="inner">
+    <div class="summary">
+      <section class="panel" aria-labelledby="h-filled">
+        <h2 id="h-filled">Coverage</h2>
+        <div class="big"><span id="filled">0</span><small>of <span id="total">28</span> spots claimed</small></div>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="28" aria-valuenow="0" id="bar"><i id="barfill"></i></div>
+      </section>
+      <section class="panel" aria-labelledby="h-mine">
+        <h2 id="h-mine">Your shifts</h2>
+        <p class="mine-empty" id="mine-empty">None yet. Pick a day below.</p>
+        <ul class="mine-list" id="mine-list" hidden></ul>
+      </section>
+    </div>
+
+    <div class="namebox">
+      <label for="myname">Your name</label>
+      <input id="myname" type="text" maxlength="40" autocomplete="name" placeholder="First and last name">
+      <span class="namehint">Shown next to the days you sign up for.</span>
+    </div>
+
+    <p id="note" role="status" aria-live="polite">Loading current sign-ups&hellip;</p>
+
+    <div class="week" id="week"></div>
+  </div>
+</main>
+
+<script>
+(function () {
+  // Google Apps Script web app URL (from Deploy > New deployment > Web app).
+  var API = 'https://script.google.com/macros/s/AKfycbyCNYR70SJw2D-gdK0MUT0u8QyMhbMXKu3WqVE_ioX8tzlxKsyxTFAaOM1W50dEmoTR/exec';
+
+  var START = Date.UTC(2026, 10, 9);
+  var DAYS = 14;
+  var CAP = 2;
+  var DOW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  // This browser's identity: a public id plus a secret used to cancel its own spots.
+  function rand() { var a = new Uint8Array(12); crypto.getRandomValues(a); return Array.from(a, function (b) { return b.toString(16).padStart(2, '0'); }).join(''); }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  var myId = lsGet('oh167-id') || rand(); lsSet('oh167-id', myId);
+  var mySecret = lsGet('oh167-secret') || rand(); lsSet('oh167-secret', mySecret);
+
+  var nameInput = document.getElementById('myname');
+  nameInput.value = lsGet('openhouse-name') || '';
+  nameInput.addEventListener('change', function () { lsSet('openhouse-name', nameInput.value.trim()); });
+
+  var data = null, busy = false;
+  var refs = {}, slotMeta = {};
+  var noteEl = document.getElementById('note');
+  function note(text, warn) { noteEl.textContent = text; noteEl.className = warn ? 'warn' : ''; }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  var week = document.getElementById('week');
+  for (var i = 0; i < DAYS; i++) {
+    var d = new Date(START + i * 864e5);
+    var key = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
+    var dow = DOW[d.getUTCDay()];
+    var dateText = MON[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear();
+    if (i % 7 === 0) {
+      var wkEnd = new Date(START + (i + 6) * 864e5);
+      week.appendChild(el('h2', 'weekhead', 'Week ' + (i / 7 + 1) + ' · ' + MON[d.getUTCMonth()] + ' ' + d.getUTCDate() + ' – ' + MON[wkEnd.getUTCMonth()] + ' ' + wkEnd.getUTCDate()));
+    }
+    slotMeta[key] = dow + ' ' + dateText;
+    var day = el('section', 'day');
+    day.setAttribute('aria-label', slotMeta[key]);
+    var label = el('div', 'daylabel');
+    label.appendChild(el('div', 'dow', dow));
+    label.appendChild(el('div', 'date', dateText));
+    day.appendChild(label);
+    var box = el('div', 'shift');
+    var head = el('div', 'shifthead');
+    head.appendChild(el('span', 'shiftname', 'Open house'));
+    var hrs = el('span', 'hours', 'Hours TBA');
+    head.appendChild(hrs);
+    box.appendChild(head);
+    var seats = el('div', 'seats');
+    box.appendChild(seats);
+    var actions = el('div', 'actions');
+    var status = el('span', 'status', '');
+    var btn = el('button', 'claim', 'Sign up');
+    btn.type = 'button';
+    (function (k) { btn.addEventListener('click', function () { toggle(k); }); })(key);
+    actions.appendChild(status);
+    actions.appendChild(btn);
+    box.appendChild(actions);
+    day.appendChild(box);
+    refs[key] = { seats: seats, btn: btn, status: status, hours: hrs };
+    week.appendChild(day);
+  }
+  var keys = Object.keys(refs);
+  var total = keys.length * CAP;
+  document.getElementById('total').textContent = String(total);
+  document.getElementById('bar').setAttribute('aria-valuemax', String(total));
+
+  function holders(k) { return data ? data.signups.filter(function (s) { return s.date === k; }) : []; }
+
+  function render() {
+    var filled = 0, mine = [];
+    keys.forEach(function (k) {
+      var r = refs[k], hs = holders(k);
+      var iHold = hs.some(function (h) { return h.id === myId; });
+      var h = data && data.hours && data.hours[k];
+      r.hours.textContent = h ? h : 'Hours TBA';
+      r.hours.className = 'hours' + (h ? ' set' : '');
+      r.seats.textContent = '';
+      for (var n = 0; n < Math.max(CAP, hs.length); n++) {
+        var s = hs[n];
+        if (!s) { var o = el('div', 'seat open'); o.appendChild(el('span', null, 'Open')); r.seats.appendChild(o); continue; }
+        var me = s.id === myId;
+        var seat = el('div', 'seat taken' + (me ? ' me' : ''));
+        seat.appendChild(el('span', null, me ? s.name + ' (you)' : s.name));
+        r.seats.appendChild(seat);
+      }
+      filled += Math.min(hs.length, CAP);
+      if (iHold) mine.push(k);
+      var open = Math.max(0, CAP - hs.length), full = open === 0;
+      r.status.textContent = full ? 'Full' : (open + (open === 1 ? ' spot open' : ' spots open'));
+      r.status.className = 'status' + (full ? ' full' : '');
+      r.btn.className = 'claim' + (iHold ? ' cancel' : '');
+      if (iHold) { r.btn.textContent = 'Cancel my spot'; r.btn.disabled = busy; }
+      else if (full) { r.btn.textContent = 'Full'; r.btn.disabled = true; }
+      else { r.btn.textContent = 'Sign up'; r.btn.disabled = busy || !data; }
+    });
+    document.getElementById('filled').textContent = String(filled);
+    document.getElementById('barfill').style.width = Math.round(filled / total * 100) + '%';
+    document.getElementById('bar').setAttribute('aria-valuenow', String(filled));
+    var list = document.getElementById('mine-list');
+    list.textContent = '';
+    mine.forEach(function (k) { list.appendChild(el('li', null, slotMeta[k])); });
+    list.hidden = mine.length === 0;
+    document.getElementById('mine-empty').hidden = mine.length > 0;
+  }
+
+  function load(quiet) {
+    return fetch(API, { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || !j.ok) throw new Error('bad');
+      var first = !data;
+      data = j; render();
+      if (first) note('Tap Sign up on any open day. You can cancel later from this same phone or computer.');
+    }).catch(function () { if (!quiet) note('Can’t reach the sign-ups right now. Reload the page to try again.', true); });
+  }
+
+  function toggle(k) {
+    if (busy || !data) return;
+    var iHold = holders(k).some(function (h) { return h.id === myId; });
+    var name = nameInput.value.trim();
+    if (!iHold && !name) { note('Enter your name above first, then sign up.', true); nameInput.focus(); return; }
+    if (!iHold && holders(k).length >= CAP) { note('That day just filled. Pick another one.', true); return; }
+    lsSet('openhouse-name', name);
+    busy = true; render(); note('Saving…');
+    fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: iHold ? 'cancel' : 'signup', date: k, name: name, id: myId, secret: mySecret })
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j && j.ok) { data = j; note(iHold ? 'Your spot is cancelled.' : 'You are signed up for ' + slotMeta[k] + '.'); }
+      else if (j && j.error === 'full') { note('That day just filled. Pick another one.', true); load(true); }
+      else { note('That did not save. Please try again.', true); }
+    }).catch(function () { note('That did not save. Check your connection and try again.', true); })
+      .finally(function () { busy = false; render(); });
+  }
+
+  render();
+  if (/^https:\/\/script\.google\.com\//.test(API)) {
+    load();
+    setInterval(function () { if (!busy && document.visibilityState === 'visible') load(true); }, 20000);
+  } else {
+    note('Sign-ups are not connected yet.', true);
+  }
+})();
+</script>
+</body>
+</html>
